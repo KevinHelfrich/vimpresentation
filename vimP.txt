@@ -1,0 +1,669 @@
+#Vim Presentation
+## Brief history
+1.Ed in 1971, starting place of many famous text processing utilities (grep,vim,emacs,...)
+2.Ex in 1978, upgrade of Ed designed to be easier to use
+3.Vi in 1979, literally the visual interface to ex
+4.Vim in 1991, Vi Improved, first release of the editor
+5.Vim 8 in 2016, Latest version of Vim, mostly upgraded the scripting language
+6.NeoVim in ?, still in development, fork of vim with the goal of reducing the complexity of the codebase and making the editor embedable, already prompted new features in Vim 8.
+
+## Vim's philosophy
+Maximum change and control over text for minimal input
+never move your hands
+configuarability
+extensibility
+
+## Answering the eternal question: how to quit?
+:q
+not :Q
+:w to save
+:wq to save and quit
+:q! to force quitting (will not save)
+
+## Modal editing
+Vim is a modal editor, meaning that it has several modes that it operates in that all behave differently
+the most common modes are:
+1.insert mode, basically notepad mode(though it does have features beyond what notepad can do), this is the mode where you type text
+2.normal mode, mode where you enter commands, the reason this one is called normal mode is it is where you are expected to spend most of your time
+3.visual mode, mode where you select text, similar to holding shift and moving around in other text editors
+4.visual line mode, same as visual mode, but selects the whole line
+5.there are other modes, but I use them less often, block mode, ex mode (pretty much the 1978 editor ex), Replace, ...
+
+## Answering the second most asked question: how to input text?
+Go into insert mode using the letter i (for insert)
+i enters insert mode with the cursor to the left of the char highlighted in normal mode
+
+## Getting back to Normal mode
+use <esc>
+click <esc> enough times and you'll end up in normal mode from pretty much anywhere
+
+
+
+
+
+
+
+
+## A brief digression into config files
+Vim loads up config from the _vimrc file on startup.
+The file is basically a script of commands to run before you start doing anything, everything I'll show you how to do in vim can be put in the config.
+There are a few settings that should be changed by default, mainly due to vim trying to be backwards compatible by default (neovim is looking at changing this behaviour)
+A good idea is to map the escape key to something more accesable like jj
+map vs noremap. Map is recursive, can call into other mappings that have been created. noremap calls straight to vims built in functionality. Very rarely will you want to use map.
+
+## Other ways to go into insert mode
+1. I insert before the first non-blank character of the line
+2. a (for append) almost like i, but enters insert mode with the cursor to the right of the highlighted char in normal mode
+3. A appends to the end of the line
+4. s (for substitute) deletes the character highlighted in normal mode and enters insert mode at that point
+5. S replaces the entire line
+6. r (for replace) same as s, but returns to normal mode after one character has been entered
+7. R enters replace mode where instead of inserting characters, existing characters are overwritten (I only discovered this while writing this presentation)
+8. o (for uhh???) inserts a new line after the current line, moves cursor to the beginning of the line and enters insert mode
+9. O same as o, but the newline is above
+10. gI insert at the very start of the line
+11. gi insert where the last insert mode was exited
+12. cc (c is for change, more on that later) change the current line
+13. C change until the end of the line
+
+## moving around
+normal mode has uses beyond save and quit and going into insert mode :)
+h j k l move the cursor around by one character
+w e b   move the cursor by words
+t f T F      move to a specified character
+All can take a number as an argument
+/search forward slash searches for a search term
+n N    move to the next/previous matching search term
+*      set the current word as the search term and move to the next occurence
+
+
+
+
+        public DateTime BirthDate { get; set; }
+
+        public string MaritalStatus { get; set; }
+
+        public decimal? MarginalTaxRate { get; set; }
+
+        public int? AnticipatedRetirementAge { get; set; }
+
+        public int? BelievedRiskProfile { get; set; }
+
+        public int? InvestmentHorizon { get; set; }
+
+        public int? InvestmentObjective { get; set; }
+
+        public int? IncomeSecurity { get; set; }
+
+        public int? FinancialStatus { get; set; }
+
+        public int? InvestmentKnowledge { get; set; }
+
+        public int? ComfortWithRisks { get; set; }
+
+        public int? FrequencyOfValueChecking { get; set; }
+
+        public int? CapitalGrowthFocus { get; set; }
+
+        public int? ComfortWithTemporaryLosses { get; set; }
+
+        public int? BigLossReaction { get; set; }
+
+        public int? ComfortWithReturnVariation { get; set; }
+
+        public int? InvestmentTypeChoice { get; set; }
+
+        public int? GrowthOverMoneyProtection { get; set; }
+
+        public int? VolatilitySensitivity { get; set; }
+
+        public int? EmergencyFundStrength { get; set; }
+
+        public FNAAssetValue ResidentialProperty { get; set; }
+
+        public FNAAssetValue OtherProperty { get; set; }
+
+        public FNAAssetValue BusinessInterests { get; set; }
+
+        public FNAAssetValue Cash { get; set; }
+
+        public FNAAssetValue SharePortfolio { get; set; }
+
+        public FNAAssetValue Investments { get; set; }
+
+        public FNAAssetValue Policies { get; set; }
+
+        public FNAAssetValue Pension { get; set; }
+
+        public FNAAssetValue Other { get; set; }
+
+        public FNAAssetValue ShortTermLiability { get; set; }
+
+        public FNAAssetValue MortgageLoans { get; set; }
+
+        public FNAAssetValue OtherLongTermLoans { get; set; }
+
+        public decimal? Salary { get; set; }
+
+        public decimal? InvestmentIncome { get; set; }
+
+        public decimal? OtherIncome { get; set; }
+
+        public decimal? HouseholdAndRelatedExpenses { get; set; }
+
+        public decimal? OtherExpenses { get; set; }
+
+
+
+
+
+
+        public void CreateNewFnaRpa(C_MandateFNARPA fna, string fileName)
+        {
+
+            Document document = new Document(PageSize.A4);
+            FileStream stream = null;
+            PdfReader reader = null;
+            PdfStamper stamp = null;
+
+            try
+            {
+                reader = new PdfReader(ConfigurationManager.AppSettings["mandateFiles"] + "RPA.pdf");
+
+                // set the location to write the doc
+                stream = new FileStream(fileName, FileMode.Create);
+
+                // create a stamper - to fill in the fields
+                stamp = new PdfStamper(reader, stream);
+
+                var mandate = fna.C_Mandate;
+
+                stamp.AcroFields.SetField("P1_Surname", mandate.surname);
+                stamp.AcroFields.SetField("P1_FirstNames", mandate.firstNames);
+                stamp.AcroFields.SetField("P1_DOB", mandate.dateOfBirth);
+                stamp.AcroFields.SetField("P1_Marital_Status", fna.MaritalStatus);
+                stamp.AcroFields.SetField("P1_Marginal_Tax_Rate", string.Format("{0}", fna.MarginalTaxRate));
+                stamp.AcroFields.SetField("P1_Anticipated_Retirement_Age", string.Format("{0}", fna.AnticipatedRetirementAge));
+                switch (fna.BelievedRiskProfile)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_LowRisk", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_MedRisk", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_HighRisk", "On");
+                        break;
+                }
+                if (mandate.language == "E")
+                {
+                    stamp.AcroFields.SetField("P1_Lang_Eng", "X");
+                }
+                else
+                {
+                    stamp.AcroFields.SetField("P1_Lang_Afr", "X");
+                }
+
+                switch (mandate.title)
+                {
+                    case "mnr":
+                    case "Mr":
+                        stamp.AcroFields.SetField("P1_Title_Mr", "X");
+                        break;
+                    case "Mrs":
+                    case "Mev":
+                        stamp.AcroFields.SetField("P1_Title_Mrs", "X");
+                        break;
+                    case "Miss":
+                    case "Ms":
+                    case "Mej":
+                        stamp.AcroFields.SetField("P1_Title_Miss", "X");
+                        break;
+                    case "Dr":
+                        stamp.AcroFields.SetField("P1_Title_Dr", "X");
+                        break;
+                    case "Prof":
+                        stamp.AcroFields.SetField("P1_Title_Prof", "X");
+                        break;
+                    default:
+                        stamp.AcroFields.SetField("P1_Title_Other", mandate.title);
+                        break;
+                }
+
+                if (mandate.gender == "F")
+                {
+                    stamp.AcroFields.SetField("P1_Gender_Female", "X");
+                }
+                else
+                {
+                    stamp.AcroFields.SetField("P1_Gender_Male", "X");
+                }
+
+                if (mandate.idType == "RSA ID")
+                {
+                    stamp.AcroFields.SetField("P1_RSAID", "X");
+                    stamp.AcroFields.SetField("P1_IDNumber", mandate.id);
+                }
+                else if (mandate.idType == "RSA Passport")
+                {
+                    stamp.AcroFields.SetField("P1_RSAPassport", "X");
+                    stamp.AcroFields.SetField("P1_RSAPassport_Expiry", mandate.expiryDate);
+                }
+                else
+                {
+                    stamp.AcroFields.SetField("P1_Other_ID_Type", mandate.idType);
+                }
+
+                switch (fna.AgeBracket)
+                {
+                    case 5:
+                        stamp.AcroFields.SetField("P1_Age1834", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_Age3544", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_Age4554", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_Age5564", "On");
+                        break;
+                    case 1:
+                        stamp.AcroFields.SetField("P1_Age65plus", "On");
+                        break;
+                }
+
+                switch (fna.InvestmentHorizon)
+                {
+                    case 2:
+                        stamp.AcroFields.SetField("P1_TimeHorizon1", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_TimeHorizon2", "On");
+                        break;
+                    case 6:
+                        stamp.AcroFields.SetField("P1_TimeHorizon3", "On");
+                        break;
+                    case 8:
+                        stamp.AcroFields.SetField("P1_TimeHorizon4", "On");
+                        break;
+                    case 10:
+                        stamp.AcroFields.SetField("P1_TimeHorizon5", "On");
+                        break;
+                }
+
+                switch (fna.InvestmentObjective)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_Objective5", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_Objective4", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_Objective3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_Objective2", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_Objective1", "On");
+                        break;
+                }
+                switch (fna.IncomeSecurity)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_HowSecure1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_HowSecure2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_HowSecure3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_HowSecure4", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_HowSecure5", "On");
+                        break;
+                }
+                switch (fna.FinancialStatus)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_FinancialStatus1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_FinancialStatus2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_FinancialStatus3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_FinancialStatus4", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_FinancialStatus5", "On");
+                        break;
+                }
+                var scoreA = (fna.FinancialStatus ?? 0) + (fna.IncomeSecurity ?? 0) + (fna.InvestmentObjective ?? 0) + (fna.InvestmentHorizon ?? 0) + (fna.AgeBracket ?? 0);
+                stamp.AcroFields.SetField("P1_PartAScore", scoreA.ToString());
+
+                switch (fna.InvestmentKnowledge)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_InvestmentKnowledge1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_InvestmentKnowledge2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_InvestmentKnowledge3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_InvestmentKnowledge4", "On");
+                        break;
+                }
+                switch (fna.ComfortWithRisks)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_InvestmentRisk1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_InvestmentRisk2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_InvestmentRisk3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_InvestmentRisk4", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_InvestmentRisk5", "On");
+                        break;
+                }
+                switch (fna.FrequencyOfValueChecking)
+                {
+                    case 5:
+                        stamp.AcroFields.SetField("P1_CheckYourInvestment5", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_CheckYourInvestment4", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_CheckYourInvestment3", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_CheckYourInvestment2", "On");
+                        break;
+                    case 1:
+                        stamp.AcroFields.SetField("P1_CheckYourInvestment1", "On");
+                        break;
+                }
+                switch (fna.CapitalGrowthFocus)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_IncomeVsGrowth1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_IncomeVsGrowth2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_IncomeVsGrowth3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_IncomeVsGrowth4", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_IncomeVsGrowth5", "On");
+                        break;
+                }
+                switch (fna.ComfortWithTemporaryLosses)
+                {
+                    case 5:
+                        stamp.AcroFields.SetField("P1_DecreaseInValue5", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_DecreaseInValue4", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_DecreaseInValue3", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_DecreaseInValue2", "On");
+                        break;
+                    case 1:
+                        stamp.AcroFields.SetField("P1_DecreaseInValue1", "On");
+                        break;
+                }
+                switch (fna.BigLossReaction)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_FellBy20p1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_FellBy20p2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_FellBy20p3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_FellBy20p4", "On");
+                        break;
+                }
+                switch (fna.ComfortWithReturnVariation)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_PortFolioA", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_PortFolioB", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_PortFolioC", "On");
+                        break;
+                }
+                int scoreB = (fna.ComfortWithReturnVariation ?? 0) + (fna.BigLossReaction ?? 0) +
+                            (fna.ComfortWithTemporaryLosses ?? 0) + (fna.CapitalGrowthFocus ?? 0) +
+                            (fna.ComfortWithRisks ?? 0) + (fna.ComfortWithRisks ?? 0) +
+                            (fna.InvestmentKnowledge ?? 0);
+                stamp.AcroFields.SetField("P1_PartBScore", string.Format("{0}", scoreB));
+
+
+
+                switch (fna.InvestmentTypeChoice)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_ComfortableInvestments1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_ComfortableInvestments2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_ComfortableInvestments3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_ComfortableInvestments4", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_ComfortableInvestments5", "On");
+                        break;
+                }
+                switch (fna.GrowthOverMoneyProtection)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_ProtectWithLittleGrowth5", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_ProtectWithLittleGrowth4", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_ProtectWithLittleGrowth3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_ProtectWithLittleGrowth2", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_ProtectWithLittleGrowth1", "On");
+                        break;
+                }
+                switch (fna.VolatilitySensitivity)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_MoreGrowthVolatility1", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_MoreGrowthVolatility2", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_MoreGrowthVolatility3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_MoreGrowthVolatility4", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_MoreGrowthVolatility5", "On");
+                        break;
+                }
+                switch (fna.EmergencyFundStrength)
+                {
+                    case 1:
+                        stamp.AcroFields.SetField("P1_EmergencyFund5", "On");
+                        break;
+                    case 2:
+                        stamp.AcroFields.SetField("P1_EmergencyFund4", "On");
+                        break;
+                    case 3:
+                        stamp.AcroFields.SetField("P1_EmergencyFund3", "On");
+                        break;
+                    case 4:
+                        stamp.AcroFields.SetField("P1_EmergencyFund2", "On");
+                        break;
+                    case 5:
+                        stamp.AcroFields.SetField("P1_EmergencyFund1", "On");
+                        break;
+                }
+
+                int scoreC = (fna.EmergencyFundStrength ?? 0) + (fna.VolatilitySensitivity ?? 0) +
+                             (fna.GrowthOverMoneyProtection ?? 0) + (fna.InvestmentTypeChoice ?? 0);
+
+                stamp.AcroFields.SetField("P1_PartCScore", string.Format("{0}", scoreC));
+                stamp.AcroFields.SetField("P1_Part_A_Individual_Considerations", string.Format("{0}", scoreA));
+                stamp.AcroFields.SetField("P1_Part_B_Risk_tolerance", string.Format("{0}", scoreB));
+                stamp.AcroFields.SetField("P1_Part_C_Investment_objectives", string.Format("{0}", scoreC));
+                stamp.AcroFields.SetField("P1_Total", string.Format("{0}", scoreA + scoreB + scoreC));
+
+
+                stamp.AcroFields.SetField("P1_LA_FP_Res", string.Format("{0}", fna.ResidentialPropertyLocal));
+                stamp.AcroFields.SetField("P1_OAL_FP_Res", string.Format("{0}", fna.ResidentialPropertyOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_FP_Other", string.Format("{0}", fna.OtherPropertyLocal));
+                stamp.AcroFields.SetField("P1_OLA_FP_Other", string.Format("{0}", fna.OtherPropertyOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_BusinessInterests", string.Format("{0}", fna.BusinessInterestsLocal));
+                stamp.AcroFields.SetField("P1_OLA_BusinessInterests", string.Format("{0}", fna.BusinessInterestsOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_Cash", string.Format("{0}", fna.CashLocal));
+                stamp.AcroFields.SetField("P1_OLA_Cash", string.Format("{0}", fna.CashOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_SharePortfolio", string.Format("{0}", fna.SharePortfolioLocal));
+                stamp.AcroFields.SetField("P1_OLA_SharePortfolio", string.Format("{0}", fna.SharePortfolioOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_Investments", string.Format("{0}", fna.InvestmentsLocal));
+                stamp.AcroFields.SetField("P1_OLA_Investments", string.Format("{0}", fna.InvestmentsOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_Policies", string.Format("{0}", fna.PoliciesLocal));
+                stamp.AcroFields.SetField("P1_OLA_Policies", string.Format("{0}", fna.PoliciesOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_Pension", string.Format("{0}", fna.PensionLocal));
+                stamp.AcroFields.SetField("P1_OLA_Pension", string.Format("{0}", fna.PensionOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_Other", string.Format("{0}", fna.OtherLocal));
+                stamp.AcroFields.SetField("P1_OLA_Other", string.Format("{0}", fna.OtherOffShore));
+
+                var totalLocal = fna.OtherLocal + fna.PensionLocal + fna.PoliciesLocal + fna.InvestmentsLocal +
+                                 fna.SharePortfolioLocal + fna.CashLocal + fna.BusinessInterestsLocal +
+                                 fna.OtherPropertyLocal + fna.ResidentialPropertyLocal;
+                var totalOffshore = fna.OtherOffShore + fna.PensionOffShore + fna.PoliciesOffShore + fna.InvestmentsOffShore +
+                                 fna.SharePortfolioOffShore + fna.CashOffShore + fna.BusinessInterestsOffShore +
+                                 fna.OtherPropertyOffShore + fna.ResidentialPropertyOffShore;
+
+                stamp.AcroFields.SetField("P1_LA_TotalAssets", string.Format("{0}", totalLocal));
+                stamp.AcroFields.SetField("P1_OLA_TotalAssets", string.Format("{0}", totalOffshore));
+
+                stamp.AcroFields.SetField("P1_LA_STL", string.Format("{0}", fna.ShortTermLiabilityLocal));
+                stamp.AcroFields.SetField("P1_OLA_STL", string.Format("{0}", fna.ShortTermLiabilityOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_ML", string.Format("{0}", fna.MortgageLoansLocal));
+                stamp.AcroFields.SetField("P1_OLA_ML", string.Format("{0}", fna.MortgageLoansOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_OLTL", string.Format("{0}", fna.OtherLongTermLoansLocal));
+                stamp.AcroFields.SetField("P1_OLA_OLTL", string.Format("{0}", fna.OtherLongTermLoansOffShore));
+
+                var totalLiabLocal = fna.ShortTermLiabilityLocal + fna.MortgageLoansLocal + fna.OtherLongTermLoansLocal;
+                var totalLiabOffShore = fna.ShortTermLiabilityOffShore + fna.MortgageLoansOffShore + fna.OtherLongTermLoansOffShore;
+
+                stamp.AcroFields.SetField("P1_LA_TotalLiabilities", string.Format("{0}", totalLiabLocal));
+                stamp.AcroFields.SetField("P1_OLA_TotalLiabilities", string.Format("{0}", totalLiabOffShore));
+
+                stamp.AcroFields.SetField("P1_LA_NetValue", string.Format("{0}", totalLocal - totalLiabLocal));
+                stamp.AcroFields.SetField("P1_OLA_NetValue", string.Format("{0}", totalOffshore - totalLiabOffShore));
+
+                stamp.AcroFields.SetField("P1_Salary_CBA", string.Format("{0}", fna.Salary));
+                stamp.AcroFields.SetField("P1_InvestmentIncome", string.Format("{0}", fna.InvestmentIncome));
+                stamp.AcroFields.SetField("P1_OtherIncome", string.Format("{0}", fna.OtherIncome));
+                stamp.AcroFields.SetField("P1_TotalAnnualIncome", string.Format("{0}", fna.OtherIncome + fna.InvestmentIncome + fna.Salary));
+
+                stamp.AcroFields.SetField("P1_HouseholdRelatedExpenses", string.Format("{0}", fna.HouseholdAndRelatedExpenses));
+                stamp.AcroFields.SetField("P1_OtherExpenses", string.Format("{0}", fna.OtherExpenses));
+                stamp.AcroFields.SetField("P1_TotalExpenses", string.Format("{0}", fna.HouseholdAndRelatedExpenses + fna.OtherExpenses));
+
+                stamp.AcroFields.SetField("P1_NetAnnualIncome", string.Format("{0}", fna.Salary + fna.InvestmentIncome + fna.OtherIncome - (fna.HouseholdAndRelatedExpenses + fna.OtherExpenses)));
+
+                if (fna.C_MandateFNADependants.Any())
+                {
+                    var dependants = fna.C_MandateFNADependants.ToArray();
+                    for (var i = 0; i < dependants.Length; i++)
+                    {
+                        if (i > 7)
+                        {
+                            break;
+                        }
+                        var dep = dependants[i];
+                        stamp.AcroFields.SetField(string.Format("P1_DOD_Surname{0}", (i + 1)), string.Format("{0}", dep.Surname));
+                        stamp.AcroFields.SetField(string.Format("P1_DOD_Firstname{0}", (i + 1)), string.Format("{0}", dep.FirstName));
+                        stamp.AcroFields.SetField(string.Format("P1_DOD_Gender{0}", (i + 1)), string.Format("{0}", dep.Gender == 1 ? "M" : "F"));
+                        stamp.AcroFields.SetField(string.Format("P1_DOD_Relation{0}", (i + 1)), string.Format("{0}", dep.Relationship));
+                        stamp.AcroFields.SetField(string.Format("P1_DOD_DOB{0}", (i + 1)), string.Format("{0}", dep.DateOfBirth));
+                    }
+                }
+
+
+                stamp.FormFlattening = true;
+                stamp.Close();
+
+                stream.Close();
+                reader.Close();
+
+                // log this
+                Logger.Log("Create FNARPA: " + fileName, Logger.LogType.Application);
+            }
+            catch (System.Exception ex)
+            {
+                // log
+                Logger.Log(ex, Logger.LogType.Error);
+
+                // throw the exception
+                throw ex;
+            }
+            finally
+            {
+                if (stream != null) stream.Close();
+                stream = null;
+                if (stamp != null) stamp.Close();
+                stamp = null;
+                if (reader != null) reader.Close();
+                reader = null;
+            }
+        }
