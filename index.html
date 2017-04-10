@@ -70,21 +70,45 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ##Tersness
+                            ## Tersness
 
                             VIM is designed to make big editing jobs easy to do quickly.
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ##Flexibility
+                            ## Flexibility
 
                             VIM is designed to be configured, through its extensive config options and various scripting languages, to meet any need you could have.
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            
+                            ## VIM as a language
+
+                            VIM is a way of interacting with text, more than it is a specific editor. As a result most modern editors and IDEs have a VIM plugin (even EMACs, after all they needed a text editor :P)
+                        </script>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Practical Points</h1>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Modal editing
+                            VIM can be set into several different modes, in each mode it behaves differently
+
+                            For instance in insert mode pressing i results in i being entered into the buffer, in normal (command) mode pressing i changes to insert mode
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Never move your hands
+
+                            For all intents and purposes any keys beyond the central block of keys on a keyboard do not exist
+
+                            The mouse might be a figment of your imagination
                         </script>
                     </section>
                 </section>
@@ -99,6 +123,76 @@
                         :wq
 
                     </script>
+                </section>
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Basic movement
+                            h - left
+
+                            j - down
+
+                            k - up
+
+                            l - right
+                        </script>
+                    </section>
+                    <section>
+                        <img src="imgs/keys.jpg"/>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Word based movement
+                            w - move forward by one word (ending at the start of the next word)
+
+                            e - move to the end of the word, and then the end of the next word
+
+                            b - move back a word, to the start of the previous word
+                        </script>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <img src="imgs/count.jpg"/>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Counts
+                            Most VIM commands can be preceeded by a number in order to perform them multiple times
+
+                            For example 3j moves down 3 lines instead of the 1 line that j moves down, or 3w move forward 3 words.
+                        </script>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Motions</h1>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            Insert is not the only way to edit text
+
+                            c changes text, d deletes text,y yanks (copies) text, v (visual) selects text
+
+                            All of these commands take a motion
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## so what is a motion?
+
+                            A motion is any single movement (3j is a motion as it is one command, jjj is not a motion as it is 3 separate movement commands)
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## some useful motions
+                            t (to) and f (find) both move towards a given character
+
+                            ## some special motions
+                            i (inside) and a (around) both work with some kind of bracket or other type of surrounding character
+                        </script>
+                    </section>
                 </section>
             </div>
         </div>
